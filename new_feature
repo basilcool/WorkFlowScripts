@@ -1,0 +1,21 @@
+#!/bin/bash
+
+USER=useremail@mail.com
+PASS=******
+REPO="$(git remote show -n origin | grep Fetch | cut -d: -f3- | cut -d. -f1)"
+LABEL_QUEUE="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "1 - queue"')"
+LABEL_INDEV="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "2 - indev"')"
+set +x
+git checkout master
+git pull origin master
+git checkout -b feature-$1 master
+
+set -x
+
+if [[ ! -z $LABEL_QUEUE ]]; then
+	curl --user "$USER:$PASS" --include --request DELETE "https://api.github.com/repos/$REPO/issues/$1/labels/1%20-%20queue"
+fi
+
+if [[ -z $LABEL_INDEV ]]; then
+	curl --user "$USER:$PASS" --include --request POST --data '[{"name":"2 - indev","color":"00AAEE"}]' "https://api.github.com/repos/$REPO/issues/$1/labels"
+fi
