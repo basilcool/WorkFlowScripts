@@ -3,8 +3,8 @@
 USER=useremail@mail.com
 PASS=******
 REPO="$(git remote show -n origin | grep Fetch | cut -d: -f3- | cut -d. -f1)"
-LABEL_QUEUE="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "1 - queue"')"
-LABEL_INDEV="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "2 - indev"')"
+LABEL_QUEUE="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$1/labels" | grep '"name": "1 - queue"')"
+LABEL_INDEV="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$1/labels" | grep '"name": "2 - indev"')"
 set +x
 git checkout master
 git pull origin master
