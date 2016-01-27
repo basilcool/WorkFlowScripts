@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+	echo "pis koment kurva"
+	exit
+fi
+
+CURRENT_BRUNCH="$(git rev-parse --abbrev-ref HEAD)"
+CURRENT_BRUNCH_NUMBER="$(git rev-parse --abbrev-ref HEAD | sed -s 's/[_A-Za-z\-]\+//')"
+
+if [ ! $CURRENT_BRUNCH_NUMBER ]; then
+	echo "zly branch $CURRENT_BRUNCH"
+	exit
+fi
+
+USER=useremail@mail.com
+PASS=******
+REPO="$(git remote show -n origin | grep Fetch | cut -d: -f3- | cut -d. -f1)"
+LABEL_INDEV="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "2 - indev"')"
+LABEL_DEVOK="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "3 - dev-OK"')"
+set +x
+
+git add -p
+git commit -m "#$CURRENT_BRUNCH_NUMBER - $1"
+git push origin $CURRENT_BRUNCH
+
+if [[ ! -z $LABEL_INDEV ]]; then
+	curl --user "$USER:$PASS" --include --request DELETE "https://api.github.com/repos/$REPO/issues/$CURRENT_BRUNCH_NUMBER/labels/2%20-%20indev"
+fi
+
+if [[ -z $LABEL_DEVOK ]]; then
+	curl --user "$USER:$PASS" --include --request POST --data '[{"name":"3 - dev-OK","color":"006B75"}]' "https://api.github.com/repos/$REPO/issues/$CURRENT_BRUNCH_NUMBER/labels"
+fi
