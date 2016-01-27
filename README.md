@@ -1,7 +1,7 @@
 # WorkFlowScripts
 Scripts for create and push branch with github labels support
 
-1. Put scripts in projects directory:
+Put scripts in projects directory:
 ```
 /projects
 |__Project1
@@ -11,12 +11,12 @@ Scripts for create and push branch with github labels support
 |__save_feature
 ```
 
-2. Allow to execute:
+Allow to execute:
 ```
 $ chmod a+x new_feature
 $ chmod a+x save_feature
 ```
-3. Add GitHub auth:
+Add GitHub auth:
 replace:
 ```
 USER=useremail@mail.com
@@ -24,12 +24,12 @@ PASS=******
 ```
 with your real data
 
-4. check remote source must be origin
+check remote source must be origin
 ```
 $ git remote 
 origin
 ```
-5. RUN
+RUN
 Go to Project1
 ```
 cd Project1
