@@ -21,6 +21,13 @@ LABEL_DEVOK="$(curl --user "$USER:$PASS" --include --request GET "https://api.gi
 set +x
 
 git add -p
+
+CHECK_CHANGES="$(git status | grep modified: )"
+if [[ ! -z $CHECK_CHANGES ]]; then
+	echo "run it again"
+	exit
+fi
+
 git commit -m "#$CURRENT_BRUNCH_NUMBER - $1"
 git push origin $CURRENT_BRUNCH
 

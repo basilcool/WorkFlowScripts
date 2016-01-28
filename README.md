@@ -1,20 +1,17 @@
 # WorkFlowScripts
 Scripts for create and push branch with github labels support
 
-Put scripts in projects directory:
+Go to projects directory and run
 ```
-/projects
-|__Project1
-|__Project2
-|__Project999
-|__new_feature
-|__save_feature
+~/projects$ git clone git@github.com:basilcool/WorkFlowScripts.git
 ```
 
-Allow to execute:
+Allow execute and create symlink in /usr/local/bin 
 ```
-$ chmod a+x new_feature
-$ chmod a+x save_feature
+$ chmod a+x WorkFlowScripts/new_feature
+$ chmod a+x WorkFlowScripts/save_feature
+$ sudo ln -s $(pwd)/WorkFlowScripts/new_feature /usr/local/bin/new_feature
+$ sudo ln -s $(pwd)/WorkFlowScripts/save_feature /usr/local/bin/save_feature
 ```
 Add GitHub auth:
 replace:
@@ -29,12 +26,16 @@ check remote source must be origin
 $ git remote 
 origin
 ```
-RUN
-Go to Project1
+Create brunch
 ```
 cd Project1
-../new_feature 1234
+~/projects/Project1$ new_feature 1234
 ```
-After this from master create new branch with name 'feature-1234'
+
+Save brunch
+```
+~/projects/Project1$ save_feature "comment for issue"
+```
+
 
 ... to be continue
