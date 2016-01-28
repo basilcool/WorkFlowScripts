@@ -13,8 +13,10 @@ if [ ! $CURRENT_BRUNCH_NUMBER ]; then
 	exit
 fi
 
-USER=useremail@mail.com
-PASS=******
+USER="$(git config user.email )"
+echo -n "GitHub Password: "
+read -s PASS
+
 REPO="$(git remote show -n origin | grep Fetch | cut -d: -f3- | cut -d. -f1)"
 LABEL_INDEV="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "2 - indev"')"
 LABEL_DEVOK="$(curl --user "$USER:$PASS" --include --request GET "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels" | grep '"name": "3 - dev-OK"')"
