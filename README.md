@@ -8,10 +8,10 @@ Go to projects directory and run
 
 Allow execute and create symlink in /usr/local/bin 
 ```
-$ chmod a+x WorkFlowScripts/new_feature
-$ chmod a+x WorkFlowScripts/save_feature
-$ sudo ln -s $(pwd)/WorkFlowScripts/new_feature /usr/local/bin/new_feature
-$ sudo ln -s $(pwd)/WorkFlowScripts/save_feature /usr/local/bin/save_feature
+chmod a+x WorkFlowScripts/new_feature
+chmod a+x WorkFlowScripts/save_feature
+sudo ln -s $(pwd)/WorkFlowScripts/new_feature /usr/local/bin/new_feature
+sudo ln -s $(pwd)/WorkFlowScripts/save_feature /usr/local/bin/save_feature
 ```
 Add GitHub auth:
 replace:
