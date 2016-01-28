@@ -13,13 +13,6 @@ chmod a+x WorkFlowScripts/save_feature
 sudo ln -s $(pwd)/WorkFlowScripts/new_feature /usr/local/bin/new_feature
 sudo ln -s $(pwd)/WorkFlowScripts/save_feature /usr/local/bin/save_feature
 ```
-Add GitHub auth:
-replace:
-```
-USER=useremail@mail.com
-PASS=******
-```
-with your real data
 
 check remote source must be origin
 ```
