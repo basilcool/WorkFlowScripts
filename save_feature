@@ -6,9 +6,9 @@ if [ $# -eq 0 ]; then
 fi
 
 CURRENT_BRUNCH="$(git rev-parse --abbrev-ref HEAD)"
-CURRENT_BRUNCH_NUMBER="$(git rev-parse --abbrev-ref HEAD | sed -s 's/[_A-Za-z\-]\+//')"
+CURRENT_ISSUE_NUMBER="$(git rev-parse --abbrev-ref HEAD | sed -s 's/[_A-Za-z\-]\+//')"
 
-if [ ! $CURRENT_BRUNCH_NUMBER ]; then
+if [ ! $CURRENT_ISSUE_NUMBER ]; then
 	echo "zly branch $CURRENT_BRUNCH"
 	exit
 fi
@@ -24,19 +24,19 @@ set +x
 
 git add -p
 
-CHECK_CHANGES="$(git status | grep modified: )"
+CHECK_CHANGES="$(git status | grep "Changes not staged for commit" )"
 if [[ ! -z $CHECK_CHANGES ]]; then
-	echo "run it again"
+	echo "Detect changes not staged for commit. Run again"
 	exit
 fi
 
-git commit -m "#$CURRENT_BRUNCH_NUMBER - $1"
+git commit -m "#$CURRENT_ISSUE_NUMBER - $1"
 git push origin $CURRENT_BRUNCH
 
 if [[ ! -z $LABEL_INDEV ]]; then
-	curl --user "$USER:$PASS" --include --request DELETE "https://api.github.com/repos/$REPO/issues/$CURRENT_BRUNCH_NUMBER/labels/2%20-%20indev"
+	curl --user "$USER:$PASS" --include --request DELETE "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels/2%20-%20indev"
 fi
 
 if [[ -z $LABEL_DEVOK ]]; then
-	curl --user "$USER:$PASS" --include --request POST --data '[{"name":"3 - dev-OK","color":"006B75"}]' "https://api.github.com/repos/$REPO/issues/$CURRENT_BRUNCH_NUMBER/labels"
+	curl --user "$USER:$PASS" --include --request POST --data '[{"name":"3 - dev-OK","color":"006B75"}]' "https://api.github.com/repos/$REPO/issues/$CURRENT_ISSUE_NUMBER/labels"
 fi
